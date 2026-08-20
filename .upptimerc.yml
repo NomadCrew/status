@@ -1,31 +1,44 @@
-# Change these first
-owner: upptime # Your GitHub organization or username, where this repository lives
-repo: upptime # The name of this repository
+# NomadCrew status monitor configuration
+# Probes run from GitHub Actions (external vantage), so a Dubai VM outage is visible.
+# Probe targets verified live 2026-08-20; see workspace docs for the health-surface map.
+owner: NomadCrew
+repo: status
+user-agent: nomadcrew-status-monitor
 
 sites:
-  - name: Google
-    url: https://www.google.com
-  - name: Wikipedia
-    url: https://en.wikipedia.org
-  - name: Hacker News
-    url: https://news.ycombinator.com
-  - name: Secret Site
-    url: $SECRET_SITE
+  # Single best probe: backend returns 503 if Postgres, Redis, or migrations are down/dirty
+  - name: Backend API (DB, Redis, migrations)
+    url: https://api.nomadcrew.uk/health/readiness
+  # 401 is the healthy answer: proves routing + auth middleware are wired
+  - name: API routing and auth
+    url: https://api.nomadcrew.uk/v1/trips
+    expectedStatusCodes:
+      - 401
+  - name: Supabase auth
+    url: https://kijatqtrwdzltelqzadx.supabase.co/auth/v1/health
+    headers:
+      - "apikey: $SUPABASE_ANON_KEY"
+  - name: Landing site
+    url: https://nomadcrew.uk
+  - name: Landing functions (image proxy)
+    url: https://nomadcrew.uk/api/unsplash
+  # Fly auto-stop app: cold starts can exceed 15s, so degraded threshold is generous
+  - name: Umami analytics
+    url: https://nomadcrew-umami.fly.dev/script.js
+    maxResponseTime: 60000
+  # 403 is the healthy answer: Coolify dashboard is deliberately webhook-only public
+  - name: Coolify deploy endpoint
+    url: https://coolify.nomadcrew.uk
+    expectedStatusCodes:
+      - 403
 
 status-website:
-  # Add your custom domain name, or remove the `cname` line if you don't have a domain
-  # Uncomment the `baseUrl` line if you don't have a custom domain and add your repo name there
-  cname: demo.upptime.js.org
-  # baseUrl: /your-repo-name
-  logoUrl: https://raw.githubusercontent.com/upptime/upptime.js.org/master/static/img/icon.svg
-  name: Upptime
-  introTitle: "**Upptime** is the open-source uptime monitor and status page, powered entirely by GitHub."
-  introMessage: This is a sample status page which uses **real-time** data from our [GitHub repository](https://github.com/upptime/upptime). No server required — just GitHub Actions, Issues, and Pages. [**Get your own for free**](https://github.com/upptime/upptime)
+  baseUrl: /status
+  name: NomadCrew Status
+  introTitle: "**NomadCrew** service status"
+  introMessage: Live health of the NomadCrew stack, probed every 5 minutes from GitHub Actions. The backend check covers the API plus its database, Redis, and migration state; Supabase auth, the landing site, and analytics are probed separately.
   navbar:
     - title: Status
       href: /
     - title: GitHub
-      href: https://github.com/$OWNER/$REPO
-
-# Upptime also supports notifications, assigning issues, and more
-# See https://upptime.js.org/docs/configuration
+      href: https://github.com/NomadCrew

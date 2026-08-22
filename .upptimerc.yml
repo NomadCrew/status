@@ -1,4 +1,4 @@
-# NomadCrew status monitor configuration
+﻿# NomadCrew status monitor configuration
 # Probes run from GitHub Actions (external vantage), so a Dubai VM outage is visible.
 # Probe targets verified live 2026-08-20; see workspace docs for the health-surface map.
 owner: NomadCrew
@@ -14,10 +14,13 @@ sites:
     url: https://api.nomadcrew.uk/v1/trips
     expectedStatusCodes:
       - 401
+  # The apikey below is Supabase's PUBLISHABLE anon key (ships in every client app;
+  # RLS enforces security). Embedded literally because secret substitution does not
+  # apply inside headers.
   - name: Supabase auth
     url: https://kijatqtrwdzltelqzadx.supabase.co/auth/v1/health
     headers:
-      - "apikey: $SUPABASE_ANON_KEY"
+      - "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtpamF0cXRyd2R6bHRlbHF6YWR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5Mzg0NTYsImV4cCI6MjA4NTUxNDQ1Nn0.LL4YlGqp6q_4u-EavgL6GlT9gByYVRB9irRRkT7lZuU"
   - name: Landing site
     url: https://nomadcrew.uk
   - name: Landing functions (image proxy)

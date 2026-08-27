@@ -1,7 +1,7 @@
 url: https://api.nomadcrew.uk/health/readiness
 status: up
 code: 200
-responseTime: 785
-lastUpdated: 2026-08-25T23:30:08.772Z
+responseTime: 770
+lastUpdated: 2026-08-27T04:27:00.538Z
 startTime: 2026-08-20T17:38:08.193Z
 generator: Upptime <https://github.com/upptime/upptime>

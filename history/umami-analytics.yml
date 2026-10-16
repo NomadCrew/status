@@ -1,7 +1,7 @@
 url: https://nomadcrew-umami.fly.dev/script.js
-status: up
-code: 200
-responseTime: 19003
-lastUpdated: 2026-10-16T01:06:50.867Z
+status: down
+code: 503
+responseTime: 43385
+lastUpdated: 2026-10-16T18:15:52.516Z
 startTime: 2026-08-20T17:38:25.074Z
 generator: Upptime <https://github.com/upptime/upptime>

@@ -1,7 +1,7 @@
 url: https://api.nomadcrew.uk/v1/trips
-status: up
-code: 401
-responseTime: 614
-lastUpdated: 2026-11-25T05:19:23.799Z
+status: down
+code: 503
+responseTime: 795
+lastUpdated: 2026-11-25T11:44:42.027Z
 startTime: 2026-08-20T17:38:09.185Z
 generator: Upptime <https://github.com/upptime/upptime>
